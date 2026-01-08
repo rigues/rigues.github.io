@@ -1,4 +1,4 @@
-#Visão geral da plataforma AIOS
+# Visão geral da plataforma AIOS
 
 Desenvolvido pela dtLabs, o AIOS é uma plataforma que combina hardware e software e permite a implantação rápida e fácil de soluções de inteligência artificial e visão computacional que podem ser aplicadas a diferentes segmentos do mercado, como indústria, logística, agronegócio, varejo, segurança do trabalho, proteção patrimonial, urbanismo e muito mais.
 
