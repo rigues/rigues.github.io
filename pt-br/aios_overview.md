@@ -5,3 +5,6 @@ Desenvolvido pela dtLabs, o AIOS é uma plataforma que combina hardware e softwa
 Ela é composta por hardware especializado, chamado *AIBox*, combinado a software com uma interface no-code flexível, que agrega modelos de visão computacional prontos para usar, ferramentas para treinamento e gerenciamento de modelos customizados e recursos para o gerenciamento de dispositivos conectados à plataforma.
 
 Longe de ser apenas mais uma ferramenta, AIOS é um ecossistema que coloca o poder da Inteligência Artificial diretamente nas mãos dos usuários, independentemente de sua experiência em programação.
+
+**Veja também**
+[Organização e recursos da plataforma AIOS](./aios_organization_features.html)
