@@ -6,7 +6,7 @@ Ela é composta por hardware especializado, chamado *AIBox*, combinado a softwar
 
 Longe de ser apenas mais uma ferramenta, AIOS é um ecossistema que coloca o poder da Inteligência Artificial diretamente nas mãos dos usuários, independentemente de sua experiência em programação.
 
-**Veja também** 
-* [Organização e recursos da plataforma AIOS](./aios_organization_features.html)
-* [Requisitos de hardware da plataforma AIOS](./aios_hardware_requirements.html)
-* Requisitos de software da plataforma AIOS
+**Veja também**  
+* [Organização e recursos da plataforma AIOS](./aios_organization_features.html)  
+* [Requisitos de hardware da plataforma AIOS](./aios_hardware_requirements.html)  
+* [Requisitos de software da plataforma AIOS](./aios_software_requirements.html)  
