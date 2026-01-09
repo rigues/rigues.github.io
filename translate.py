@@ -6,67 +6,55 @@ import yaml
 import json
 from pathlib import Path
 
+# --- CONFIGURAÇÃO ---
 try:
     from google.genai import Client
 except ImportError:
     raise ImportError("Instale: pip install google-genai pyyaml")
 
 client = Client(api_key=os.environ.get("GEMINI_API_KEY"))
-MODEL_ID = "gemini-2.5-flash"
+MODEL_ID = "gemini-2.0-flash"
+SIMULACAO = False # Coloque False para corrigir seus arquivos agora
+# --------------------
 
-def clean_json_response(text):
-    """Extrai apenas o conteúdo entre as chaves { } caso a IA mande texto extra."""
-    try:
-        match = re.search(r'\{.*\}', text, re.DOTALL)
-        if match:
-            return json.loads(match.group(0))
-        return json.loads(text)
-    except:
-        return None
+def clean_ai_output(text):
+    """Remove marcações de blocos de código (```json, ```markdown) que a IA insere."""
+    # Remove as crases e o nome da linguagem no início e fim
+    text = re.sub(r'^```[a-z]*\n', '', text, flags=re.MULTILINE)
+    text = re.sub(r'\n```$', '', text, flags=re.MULTILINE)
+    return text.strip()
 
 def translate_payload(front_matter_dict, body_content):
-    """Traduz tudo em uma única chamada com restrições rígidas de formato."""
-    
-    # Prepara apenas o que precisa de tradução para o prompt
+    """Traduz metadados e corpo em uma única chamada estruturada."""
     meta_to_translate = {k: v for k, v in front_matter_dict.items() if k in ['title', 'parent', 'description']}
     
     prompt = f"""
-    Traduza o conteúdo Markdown abaixo do português para o inglês.
-    
-    REGRAS ESTRITAS:
-    1. Retorne a resposta EXATAMENTE no formato JSON abaixo, sem qualquer texto adicional antes ou depois.
-    2. Não ofereça alternativas. Escolha a melhor tradução técnica e use-a.
-    3. Mantenha toda a formatação Markdown, links e códigos do corpo intactos.
-    4. O campo "body" deve conter o texto completo traduzido.
-    5. O campo "metadata" deve conter um objeto com as chaves traduzidas.
-
-    FORMATO DA RESPOSTA:
+    Traduza este conteúdo Markdown para o inglês.
+    Retorne APENAS um objeto JSON puro. Não use blocos de código (```).
     {{
       "metadata": {json.dumps(meta_to_translate)},
-      "body": "corpo do texto traduzido aqui"
+      "body": "corpo traduzido aqui"
     }}
-
-    CONTEÚDO ORIGINAL:
+    ORIGINAL:
     METADADOS: {json.dumps(meta_to_translate)}
     CORPO: {body_content}
     """
 
     try:
         response = client.models.generate_content(model=MODEL_ID, contents=prompt)
-        res_text = response.text
+        raw_text = clean_ai_output(response.text)
         
-        # Tenta decodificar a resposta como JSON puro
-        data = clean_json_response(res_text)
-        
-        if data and "metadata" in data and "body" in data:
-            return data["metadata"], data["body"]
-        else:
-            print("   ⚠️ Erro na estrutura da resposta. Retornando original.")
-            return meta_to_translate, body_content
-            
+        # Tenta encontrar o JSON dentro da resposta caso ainda haja texto extra
+        match = re.search(r'\{.*\}', raw_text, re.DOTALL)
+        if match:
+            data = json.loads(match.group(0))
+            # Limpa também o corpo traduzido de possíveis crases indesejadas
+            data["body"] = clean_ai_output(data["body"])
+            return data
+        return None
     except Exception as e:
-        print(f"   ❌ Erro na requisição: {e}")
-        return None, None
+        print(f"   ❌ Erro na API: {e}")
+        return None
 
 def main():
     base_dir = Path(__file__).parent.absolute()
@@ -74,11 +62,11 @@ def main():
     
     for p in source_files:
         if "images" in p.parts: continue
-        
         target_path = base_dir / "en" / p.relative_to(base_dir / "pt-br")
         
+        # Processa se o arquivo não existe ou o original é mais novo
         if not target_path.exists() or p.stat().st_mtime > target_path.stat().st_mtime:
-            print(f"📄 Processando: {p.name}")
+            print(f"📄 Sincronizando: {p.name}")
             content = p.read_text(encoding='utf-8')
             
             front_matter_dict = {}
@@ -86,24 +74,35 @@ def main():
             if content.startswith("---"):
                 parts = re.split(r'---', content, maxsplit=2)
                 if len(parts) >= 3:
-                    try:
+                    try: 
                         front_matter_dict = yaml.safe_load(parts[1])
                         body = parts[2]
                     except: pass
 
-            t_meta, t_body = translate_payload(front_matter_dict, body)
+            data = translate_payload(front_matter_dict, body)
             
-            if t_body:
-                # Atualiza metadados originais com os traduzidos
-                for k, v in t_meta.items():
-                    front_matter_dict[k] = v
+            if data and "metadata" in data and "body" in data:
+                if not SIMULACAO:
+                    # Mescla metadados traduzidos com os originais (preserva layout, nav_order)
+                    for k, v in data['metadata'].items():
+                        front_matter_dict[k] = v
+                    
+                    # Gera o YAML limpo
+                    new_yaml = yaml.dump(front_matter_dict, allow_unicode=True, sort_keys=False)
+                    target_path.parent.mkdir(parents=True, exist_ok=True)
+                    
+                    # GRAVAÇÃO CRÍTICA: Garante que os traços '---' estão sozinhos na linha
+                    with open(target_path, 'w', encoding='utf-8') as f:
+                        f.write("---\n")
+                        f.write(new_yaml)
+                        f.write("---\n")
+                        f.write(data['body'])
+                    
+                    print(f"   ✅ Arquivo corrigido: {target_path}")
+                else:
+                    print(f"🔍 [SIMULAÇÃO] Tradução de {p.name} ok.")
                 
-                new_yaml = yaml.dump(front_matter_dict, allow_unicode=True, sort_keys=False)
-                target_path.parent.mkdir(parents=True, exist_ok=True)
-                target_path.write_text(f"---\n{new_yaml}---\n{t_body}", encoding='utf-8')
-                
-                print("   ✅ Sucesso. Aguardando 30s de cota...")
-                time.sleep(30)
+                time.sleep(30) # Respeito à cota RPD
 
 if __name__ == "__main__":
     main()
