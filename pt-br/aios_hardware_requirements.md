@@ -29,9 +29,7 @@ Note que em sistemas de monitoramento, o conceito de “pixels por metro” (**P
 
 Essa medida é relativa, e varia conforme a resolução da câmera e a distância do objeto observado. Câmeras com maior resolução têm mais pixels para distribuir por uma área da imagem, aumentando o PPM em uma mesma distância. Porém, quanto mais distante o objeto, menor o PPM. A mesma câmera pode ter 250 PPM para identificar detalhes faciais a 5 metros, mas somente 50 PPM a 25 metros, o que é insuficiente para tarefas de reconhecimento.
 
-<p align="center">
 ![Carro elétrico BMW visto por trás parado em um cruzamento, com placa traseira visível e semáforo vermelho aceso à frente em uma avenida arborizada.](./images/ppm_example.jpg "Ilustração do conceito de PPM")
-</p>
 
 A imagem acima ilustra bem o conceito de PPM. Tanto a placa do veículo como os semáforos ao fundo tem a mesma largura, cerca de 30 cm. Entretanto, como a placa está mais próxima da câmera, ocupa uma área maior da imagem (314 pixels para a placa, contra 83 pixels para os semáforos). Ou seja, com a mesma câmera o PPM da placa é maior do que o dos semáforos.
 
@@ -40,15 +38,11 @@ Em caso de dúvidas, nossa equipe de suporte pode ajudá-lo neste cálculo, indi
 ## Ângulos de incidência
 Para melhores resultados, recomendamos respeitar os **ângulos de incidência** horizontal e vertical recomendados para cada modelo. O ângulo de incidência **vertical** se refere ao ângulo da câmera em relação ao teto, como indicado pela letra grega Theta θ na figura abaixo.
 
-<p align="center">
 ![Ilustração de uma câmera de segurança na parede apontada para um personagem estilizado em pé, com linha tracejada indicando o eixo de visão e o ângulo vertical de incidência θ entre a horizontal e a câmera.](./images/vertical_angle_incidence.png "Representação do ângulo de incidência vertical")
-</p>
 
 O ângulo de incidência **horizontal** se refere ao ângulo da câmera em relação ao objeto, utilizando a direção da câmera como referência. Na figura abaixo, podemos observar que os objetos (pessoas) fazem um ângulo **a** e **b**, respectivamente, em relação à direção da câmera.
 
-<p align="center">
 ![Ilustração de uma câmera de segurança vista de cima, com duas pessoas posicionadas à esquerda e à direita, e linhas tracejadas indicando o eixo de visão para cada uma, formando os ângulos horizontais A e B em vermelho.](./images/vertical_angle_incidence.png "Representação do ângulo de incidência horizontal")
-</p>
 
 ## Parâmetros de imagem recomendados
 Abaixo, listamos os parâmetros de imagem recomendados para alguns dos componentes do AIOS. 
@@ -71,9 +65,7 @@ Estes parâmetros não se aplicam aos componentes Agendador, CLP, Detecção em 
 ## AIBox
 No AIOS, todo o processamento de imagens e dados de sensores é realizado na AIBox, um poderoso dispositivo de hardware projetado para executar localmente modelos de IA (Edge AI ou “IA de borda”) com alto desempenho e baixo consumo de energia.
 
-<p align="center">
 ![Computador industrial compacto preto sobre uma mesa de escritório, com carcaça de dissipação de calor em aletas e diversas portas de conexão na parte traseira, incluindo Ethernet, USB e conectores verdes de I/O.](./images/aibox.png "Uma AIBox")
-</p>
 
 Somente os metadados resultantes do processamento são enviados à nossa plataforma, onde podem ser adicionados a dashboards ou utilizados em relatórios. Desta forma, o risco de vazamento de informações sensíveis (imagens de seus ambientes internos) e o consumo de banda são reduzidos. 
 
