@@ -3,31 +3,35 @@ name: Auto Translate Docs
 on:
   push:
     paths:
-      - './pt-br/**'
+      - 'pt-br/**' # Monitora mudanças apenas nesta pasta na raiz
 
 jobs:
   translate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
-          fetch-depth: 2 # Necessário para comparar commits
+          fetch-depth: 0 # Busca todo o histórico para comparar commits corretamente
 
       - name: Get Changed Files
         id: changed-files
         run: |
-          # Identifica arquivos .md alterados no último commit
-          FILES=$(git diff --name-only HEAD^ HEAD | grep './pt-br/.*\.md$' | xargs)
+          # Identifica arquivos .md alterados no último push dentro de pt-br/
+          # O grep garante que só pegamos arquivos que ainda existem (ignora deletados)
+          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '^pt-br/.*\.md$' | xargs || echo "")
           echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
+          echo "Arquivos detectados: $FILES"
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.10'
 
       - name: Install Dependencies
-        run: pip install google-generativeai
+        run: |
+          python -m pip install --upgrade pip
+          pip install google-genai
 
       - name: Run Translation Script
         env:
@@ -38,7 +42,7 @@ jobs:
       - name: Commit and Push Changes
         run: |
           git config --global user.name "Gemini Translate Bot"
-          git config --global user.email "bot@dt-labs.ai"
-          git add ./en/
-          git commit -m "docs: auto-translation update [skip ci]" || echo "No changes to commit"
-          git push
+          git config --global user.email "bot@company.com"
+          git add en/
+          # O comando abaixo só faz commit se houver mudanças, evitando erro se nada mudar
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-translation update [skip ci]" && git push)
