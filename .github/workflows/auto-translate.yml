@@ -3,7 +3,7 @@ name: Auto Translate Docs
 on:
   push:
     paths:
-      - 'pt-br/**' # Monitora mudanças apenas nesta pasta na raiz
+      - 'pt-br/**' # Dispara apenas quando houver mudanças na pasta de origem
 
 jobs:
   translate:
@@ -12,16 +12,7 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # Busca todo o histórico para comparar commits corretamente
-
-      - name: Get Changed Files
-        id: changed-files
-        run: |
-          # Identifica arquivos .md alterados no último push dentro de pt-br/
-          # O grep garante que só pegamos arquivos que ainda existem (ignora deletados)
-          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep '^pt-br/.*\.md$' | xargs || echo "")
-          echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
-          echo "Arquivos detectados: $FILES"
+          fetch-depth: 0 
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -36,13 +27,17 @@ jobs:
       - name: Run Translation Script
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          CHANGED_FILES: ${{ env.CHANGED_FILES }}
+        # O script agora detecta os arquivos sozinho, sem precisar de variáveis extras
         run: python translate.py
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "Gemini Translate Bot"
           git config --global user.email "bot@company.com"
+          
+          # Adiciona as mudanças na pasta en/ (se houver)
           git add en/
-          # O comando abaixo só faz commit se houver mudanças, evitando erro se nada mudar
-          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: auto-translation update [skip ci]" && git push)
+          
+          # Verifica se o script gerou novos arquivos ou modificações
+          # Se não houver nada novo, o comando não falha
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: tradução automática atualizada [skip ci]" && git push)
