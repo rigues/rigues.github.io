@@ -3,7 +3,10 @@ name: Auto Translate Docs
 on:
   push:
     paths:
-      - 'pt-br/**' # Dispara apenas quando houver mudanças na pasta de origem
+      - 'pt-br/**'
+
+permissions:
+  contents: write # Permite que o bot faça push de arquivos
 
 jobs:
   translate:
