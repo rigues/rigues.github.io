@@ -3,7 +3,7 @@
 layout: default
 title: Visão Geral da Plataforma AIOS
 nav_order: 1
-description: "Página inicial da documentação"
+description: "Página inicial da documentação."
 ---
 
 # Visão geral da plataforma AIOS
