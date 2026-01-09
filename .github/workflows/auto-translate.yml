@@ -1,0 +1,44 @@
+name: Auto Translate Docs
+
+on:
+  push:
+    paths:
+      - './pt-br/**'
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2 # Necessário para comparar commits
+
+      - name: Get Changed Files
+        id: changed-files
+        run: |
+          # Identifica arquivos .md alterados no último commit
+          FILES=$(git diff --name-only HEAD^ HEAD | grep './pt-br/.*\.md$' | xargs)
+          echo "CHANGED_FILES=$FILES" >> $GITHUB_ENV
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Dependencies
+        run: pip install google-generativeai
+
+      - name: Run Translation Script
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          CHANGED_FILES: ${{ env.CHANGED_FILES }}
+        run: python translate.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name "Gemini Translate Bot"
+          git config --global user.email "bot@dt-labs.ai"
+          git add ./en/
+          git commit -m "docs: auto-translation update [skip ci]" || echo "No changes to commit"
+          git push
