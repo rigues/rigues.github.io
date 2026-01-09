@@ -34,4 +34,4 @@ Não é necessário traduzir manualmente os artigos para o inglês. Implementamo
 
 ## ⚠️ Observações Técnicas
 * O script de tradução preserva blocos de código e links.
-* Caso precise forçar uma tradução, você pode rodar o script translate.py localmente. Não se esqueça de informar sua chave de API no GEMINI definindo a variável de ambiente GEMINI_API_KEY.
+* Caso precise forçar uma tradução, você pode rodar o script `translate.py` localmente. Não se esqueça de informar sua chave de API no GEMINI definindo a variável de ambiente `GEMINI_API_KEY`.
