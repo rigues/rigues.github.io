@@ -1,65 +1,95 @@
-# Versão experimental do script de tradução, levando em consideração um tema do Jekyll (Minima) e usando o modelo gemma-3-27b, com um limite de uso mais generoso. Versão original no arquivo translate.bak
-
 import os
 import shutil
 import time
 import re
 from pathlib import Path
 
+# Gerenciamento de importação
 try:
     from google.genai import Client
 except ImportError:
-    raise ImportError("Instale: pip install google-genai")
+    raise ImportError("Instale a biblioteca: pip install google-genai")
 
+# Configuração do Cliente
 client = Client(api_key=os.environ.get("GEMINI_API_KEY"))
-MODEL_ID = "gemma-3-27b" # Usando sua cota de 14.4K RPD
+
+# Alterado para o modelo Flash 2.0 (mais estável para v1)
+MODEL_ID = "gemini-2.0-flash"
 
 def translate_markdown(content):
-    # Separa o Front Matter (YAML) do corpo do Markdown
+    """Separa o Front Matter, traduz o corpo e remonta o arquivo."""
     front_matter = ""
     body = content
     
+    # Lógica para proteger o Front Matter do Jekyll (entre ---)
     if content.startswith("---"):
         parts = re.split(r'---', content, maxsplit=2)
         if len(parts) >= 3:
             front_matter = f"---{parts[1]}---\n"
             body = parts[2]
 
-    prompt = f"Traduza o seguinte texto Markdown para o inglês, mantendo a formatação e links intactos:\n\n{body}"
+    prompt = f"""
+    Traduza o seguinte conteúdo Markdown do português para o inglês.
+    Instruções CRÍTICAS:
+    1. Mantenha todos os links, tags e blocos de código intactos.
+    2. Não traduza termos técnicos entre crases (`term`).
+    3. Retorne apenas a tradução do corpo.
+    
+    Conteúdo:
+    {body}
+    """
     
     try:
         response = client.models.generate_content(model=MODEL_ID, contents=prompt)
-        # Retorna o Front Matter original (sem traduzir) + o corpo traduzido
+        # Remonta o arquivo: Front Matter Original + Texto Traduzido
         return front_matter + response.text
     except Exception as e:
-        print(f"   ❌ Erro: {e}")
+        print(f"   ❌ Erro na API Gemini: {e}")
         return None
 
 def main():
     base_dir = Path(__file__).parent.absolute()
+    print(f"--- Sincronização Jekyll (Modelo: {MODEL_ID}) ---")
+    
+    # 1. Processamento de Documentos
     source_files = list((base_dir / "pt-br").rglob("*.md"))
     
     for p in source_files:
         if "images" in p.parts: continue
-        target_path = base_dir / str(p.relative_to(base_dir / "pt-br")).replace("pt-br", "en", 1)
         
+        # Define caminho de destino preservando subpastas
+        relative_path = p.relative_to(base_dir / "pt-br")
+        target_path = base_dir / "en" / relative_path
+        
+        should_translate = False
         if not target_path.exists() or p.stat().st_mtime > target_path.stat().st_mtime:
-            print(f"📄 Traduzindo: {p.name}")
-            translated = translate_markdown(p.read_text(encoding='utf-8'))
-            if translated:
-                target_path.parent.mkdir(parents=True, exist_ok=True)
-                target_path.write_text(translated, encoding='utf-8')
-                time.sleep(2) # Pausa curta para o Gemma
+            should_translate = True
 
-    # Sincroniza Imagens
-    img_dir = base_dir / "pt-br" / "images"
-    if img_dir.exists():
-        for img in img_dir.rglob("*"):
-            if img.suffix.lower() in ('.png', '.jpg', '.jpeg', '.svg'):
-                dest = base_dir / "en" / "images" / img.name
-                if not dest.exists() or img.stat().st_mtime > dest.stat().st_mtime:
-                    dest.parent.mkdir(parents=True, exist_ok=True)
-                    shutil.copy2(img, dest)
+        if should_translate:
+            print(f"📄 Processando: {relative_path}")
+            original_text = p.read_text(encoding='utf-8')
+            translated_text = translate_markdown(original_text)
+            
+            if translated_text:
+                target_path.parent.mkdir(parents=True, exist_ok=True)
+                target_path.write_text(translated_text, encoding='utf-8')
+                # Pausa para respeitar o limite de Requisições por Minuto (RPM)
+                time.sleep(5) 
+
+    # 2. Sincronização de Imagens
+    source_images = base_dir / "pt-br" / "images"
+    if source_images.exists():
+        print("🖼️ Sincronizando imagens...")
+        for img in source_images.rglob("*"):
+            if img.suffix.lower() in ('.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp'):
+                rel_img = img.relative_to(base_dir / "pt-br")
+                dest_img = base_dir / "en" / rel_img
+                
+                if not dest_img.exists() or img.stat().st_mtime > dest_img.stat().st_mtime:
+                    dest_img.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(img, dest_img)
+                    print(f"   📸 Imagem: {rel_img}")
 
 if __name__ == "__main__":
     main()
+    print("--- Processo Finalizado ---")
