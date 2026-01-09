@@ -1,12 +1,13 @@
-title: "Documentação do AIOS"
-description: "Teste de automação de um repositório de documentação do AIOS"
-remote_theme: jekyll/minima # Aqui você define o tema
+title: "AIOS Documentation"
+description: "Documentação técnica oficial do sistema AIOS."
+remote_theme: just-the-docs/just-the-docs
 
-# Configurações de URL para o GitHub Pages
-baseurl: "" 
-url: "https://rigues.github.io"
+# Configurações do Just the Docs
+aux_links:
+  "Repositório GitHub":
+    - https://github.com/rigues/rigues.github.io
 
 # Plugins necessários
 plugins:
   - jekyll-remote-theme
-  - jekyll-feed
+  - jekyll-seo-tag
