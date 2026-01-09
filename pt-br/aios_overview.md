@@ -9,3 +9,4 @@ Longe de ser apenas mais uma ferramenta, AIOS é um ecossistema que coloca o pod
 **Veja também** 
 * [Organização e recursos da plataforma AIOS](./aios_organization_features.html)
 * [Requisitos de hardware da plataforma AIOS](./aios_hardware_requirements.html)
+* Requisitos de software da plataforma AIOS
