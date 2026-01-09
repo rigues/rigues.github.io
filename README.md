@@ -26,10 +26,10 @@ Não é necessário traduzir manualmente os artigos para o inglês. Implementamo
 
 1. Faça o clone do repositório: `git clone git@github.com:seu-usuario/seu-repo.git`.
 2. Crie/edite arquivos **apenas** dentro de `./pt-br/`.
-3. Salve e envie suas alterações:
-    `git add .`
-    `git commit -m "docs: descrição da sua alteração"`
-    `git push origin main`
+3. Salve e envie suas alterações:  
+    `git add .`  
+    `git commit -m "docs: descrição da sua alteração"`  
+    `git push origin main`  
 4. Aguarde ~1 minuto e verifique a pasta `./en/` para ver a tradução.
 
 ## ⚠️ Observações Técnicas
