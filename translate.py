@@ -12,7 +12,7 @@ except ImportError:
     raise ImportError("Instale: pip install google-genai pyyaml")
 
 client = Client(api_key=os.environ.get("GEMINI_API_KEY"))
-MODEL_ID = "gemini-2.0-flash"
+MODEL_ID = "gemini-2.5-flash"
 
 def clean_json_response(text):
     """Extrai apenas o conteúdo entre as chaves { } caso a IA mande texto extra."""
