@@ -1,0 +1,12 @@
+title: "Documentação do AIOS"
+description: "Teste de automação de um repositório de documentação do AIOS"
+remote_theme: jekyll/minima # Aqui você define o tema
+
+# Configurações de URL para o GitHub Pages
+baseurl: "" 
+url: "https://rigues.github.io"
+
+# Plugins necessários
+plugins:
+  - jekyll-remote-theme
+  - jekyll-feed
