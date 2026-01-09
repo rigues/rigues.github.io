@@ -1,3 +1,11 @@
+---
+layout: default
+title: Requisitos de hardware da plataforma AIOS
+parent: Visão Geral da Plataforma AIOS
+nav_order: 2
+description: "Descrição dos requisitos de hardware da plataforma AIOS, incluindo câmeras, AIBox e parâmetros relacionados. "
+---
+
 # Requisitos de hardware da plataforma AIOS
 
 
