@@ -116,4 +116,4 @@ Para o correto funcionamento, a AIBox precisa se conectar a servidores externos.
 {: .warning }
 A TailScale é um serviço de VPN utilizado para acesso remoto pela equipe de suporte técnico da dtLabs. Portanto, é imprescindível que o acesso a esta VPN esteja liberado.
 
-Além disso, recomendamos que regras que restringem o acesso a endereços IPs de outros países (geoblocking) sejam removidas, pois os servidores que utilizamos estão distribuídos globalmente.
+Além disso, recomendamos que regras que restringem o acesso a endereços IPs de outros países (geoblocking) sejam removidas, pois os servidores que utilizamos estão distribuídos globalmente. 

@@ -33,4 +33,4 @@ A estrutura básica do AIOS pode dividida em quatro módulos, como ilustrado pel
 * **API para integração**: integre o AIOS a soluções e ferramentas já existentes, ou desenvolva soluções personalizadas que exijam processamento avançado.
 * **Módulo de treinamento (Dojo)**: permite o desenvolvimento e treinamento de modelos de IA customizados, perfeitamente adaptados à sua necessidade.
 * **Gerenciamento da frota de dispositivos (fleet management)**: veja quais dispositivos fazem parte de sua frota, quais pipelines estão disponíveis ou em execução, uso de recursos do sistema e mais.
-* **Plataforma desenvolvida no Brasil**: adequada às necessidades do mercado nacional e com suporte técnico em português.
+* **Plataforma desenvolvida no Brasil**: adequada às necessidades do mercado nacional e com suporte técnico em português. 
