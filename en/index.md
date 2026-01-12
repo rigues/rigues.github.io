@@ -1,6 +1,6 @@
 ---
-{}
+layout: default
+title: Brazilian Portuguese
+nav_order: 1
+description: AIOS platform documentation
 ---
-# My Project
-This is an automatic translation test using the Gemini API.
-The script should read this file and create an English version.

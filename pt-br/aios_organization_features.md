@@ -8,6 +8,10 @@ description: "Organização básica da plataforma AIOS e lista de seus principai
 
 # Organização e recursos da plataforma AIOS
 
+<br>**Nesta página**:
+* Table of Contents
+{:toc}
+
 ## Estrutura básica da plataforma AIOS
 A estrutura básica do AIOS pode dividida em quatro módulos, como ilustrado pela figura abaixo:
 ![Diagrama de fluxo da plataforma AIOS: aquisição de câmeras, processamento pela AlBox, controle via CLPs e APIs, com visualizações de dashboards, relatórios e gestão/apresentação.](./images/aios_platform_structure.png "Estrutura da plataforma AIOS")

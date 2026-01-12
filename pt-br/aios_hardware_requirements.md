@@ -2,12 +2,15 @@
 layout: default
 title: Requisitos de hardware da plataforma AIOS
 parent: Visão Geral da Plataforma AIOS
-nav_order: 1
+nav_order: 2
 description: "Descrição dos requisitos de hardware da plataforma AIOS, incluindo câmeras, AIBox e parâmetros relacionados. "
 ---
 
 # Requisitos de hardware da plataforma AIOS
 
+<br>**Nesta página**:
+* Table of Contents
+{:toc}
 
 Para obter e processar informações, o AIOS depende de dois componentes de hardware: uma ou mais câmeras IP ou sensores IoT, que irão captar imagens e dados do ambiente ou cena a ser analisada, e a AIBox, que fará o processamento das imagens, executando localmente os modelos de IA selecionados e enviando os resultados de detecção para a plataforma. 
 
@@ -28,9 +31,10 @@ Detalhes práticos, como resolução (em MP, megapixels), e a necessidade de rec
 | Formato de Streaming | RTSP, RTMP, HTTP, HTTPS, HLS, WEBRTC |
 | Resolução | 480p |
 | Framerate | 5 FPS |
-| Encoding^[1]^ | **H.264** ou **H.265**. Recomendamos um bitrate constante (**CBR**, _Constant Bitrate_) para aplicações que demandam o reconhecimento de números e letras (como **OCR** e **ALPR**) ou faces, e bitrate variável (**VBR**, _Variable Bitrate_) para outras aplicações. |
+| Encoding | **H.264** ou **H.265**. Recomendamos um bitrate constante (**CBR**, _Constant Bitrate_) para aplicações que demandam o reconhecimento de números e letras (como **OCR** e **ALPR**) ou faces, e bitrate variável (**VBR**, _Variable Bitrate_) para outras aplicações. |
 
-_**[1]** Se você possui muitas câmeras transmitindo dados através da rede local, recomendamos que utilize um bitrate constante de 512 Kb/s para aumentar a previsibilidade do uso de banda e evitar sobrecarga em seus roteadores/switches._
+{: .note }
+Se você possui muitas câmeras transmitindo dados através da rede local, recomendamos que utilize um bitrate constante de 512 Kb/s para aumentar a previsibilidade do uso de banda e evitar sobrecarga em seus roteadores/switches.
 
 ## Megapixels vs Pixels Por Metro
 Note que em sistemas de monitoramento, o conceito de “pixels por metro” (**PPM**) é mais importante do que uma medida absoluta de resolução em Megapixels (**MP**). Ele indica quantos pixels da imagem são necessários para cobrir um objeto com 1 metro de comprimento na cena observada. Quanto maior o PPM, mais detalhes a câmera consegue capturar, permitindo identificar características como rostos, placas de carros ou texto.
@@ -79,7 +83,7 @@ Somente os metadados resultantes do processamento são enviados à nossa platafo
 
 Idealmente, a AIBox e as câmeras devem estar conectadas à mesma rede, exceto se as câmeras tem um endereço IP público. Uma AIBox pode processar imagens de **até 16 câmeras**, dependendo da complexidade dos pipelines e modelos em execução. Veja a seção Entendendo o conceito de créditos para mais informações.
 
-## Principais características da AIBox
+### Principais características da AIBox
 * **Processador:** Qualcomm DragonwingTM QCS6490, com capacidade de processamento de 12 TOPS (trilhões de operações por segundo) em precisão INT8.
 * **Alimentação:** 12v DC, 1A, 12 Watts.
 * **Conectividade:** 4 portas USB 3.0 tipo A, 1 porta USB 3.0 Tipo C, 1 porta Micro USB, 1 slot para cartões microSD, 1 interface Gigabit Ethernet, 2 portas de GPIO.
@@ -89,7 +93,7 @@ Idealmente, a AIBox e as câmeras devem estar conectadas à mesma rede, exceto s
 
 A AIBox possui certificação IP (_Ingress Protection_) 40 contra ingresso de objetos. Por precaução, contate nossa equipe para discutir o fornecimento de proteção adequada caso seja necessária a instalação em ambientes onde ela esteja exposta à condensação de umidade, partículas finas oou risco de imersão em água, ou outros líquidos.
 
-## Conectividade
+### Conectividade
 Para o correto funcionamento, a AIBox precisa se conectar a servidores externos. Caso o acesso à internet seja controlado por um Firewall, certifique-de liberar o acesso aos endereços, protocolos e portas incluídos na tabela abaixo.
 
 | **Endereço** | **Protocolo** | **Portas** |
@@ -100,7 +104,7 @@ Para o correto funcionamento, a AIBox precisa se conectar a servidores externos.
 | `54.162.51.12` | TCP | 443 |
 | `3.81.214.156` | TCP e UDP | 80, 443, 15672 e 5672 |
 | `https://new-aios.s3-us-east-1.amazonaws.com/` | TCP e UDP | 443 |
-| `*.tailscale.com/*`^[1]^ | TCP, UDP, ICMP (Ping) | 41641, 443, 80 e 3478 |
+| `*.tailscale.com/*` | TCP, UDP, ICMP (Ping) | 41641, 443, 80 e 3478 |
 | `ntp.ubuntu.com` | NTP (UDP) | 123 |
 | `3.86.23.181` | TCP e UDP | 443 |
 | `https://dynamodb.us-east-1.amazonaws.com/` | TCP e UDP | 443 |
@@ -109,6 +113,7 @@ Para o correto funcionamento, a AIBox precisa se conectar a servidores externos.
 | `*.docker.com/*` | TCP e UDP | 443 |
 | `production.cloudflare.docker.com` | TCP e UDP | 443 |
 
-_**[1]** A TailScale é um serviço de VPN utilizado para acesso remoto pela equipe de suporte técnico da dtLabs. Portanto, é imprescindível que o acesso a esta VPN esteja liberado._ 
+{: .warning }
+A TailScale é um serviço de VPN utilizado para acesso remoto pela equipe de suporte técnico da dtLabs. Portanto, é imprescindível que o acesso a esta VPN esteja liberado.
 
 Além disso, recomendamos que regras que restringem o acesso a endereços IPs de outros países (geoblocking) sejam removidas, pois os servidores que utilizamos estão distribuídos globalmente.

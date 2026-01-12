@@ -2,7 +2,7 @@
 layout: default
 title: Requisitos de software da plataforma AIOS
 parent: Visão Geral da Plataforma AIOS
-nav_order: 1
+nav_order: 3
 description: "Descrição dos requisitos de software da plataforma AIOS."
 ---
 
