@@ -1,6 +1,20 @@
-__pycache__/
-*.pyc
+# Jekyll e builds locais
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# Dependências do Ruby (Gems)
+vendor/
+.bundle/
+Gemfile.lock
+
+# Arquivos de sistema e ambiente
 .env
 .venv/
-_site/
-Gemfile.lock
+__pycache__/
+*.pyc
+.sass-cache/
+
+# Logs e arquivos temporários
+*.log
+.DS_Store
