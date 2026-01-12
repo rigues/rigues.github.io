@@ -1,3 +1,20 @@
-# Meu Projeto
-Este é um teste de tradução automática usando a API do Gemini.
-O script deve ler este arquivo e criar uma versão em inglês.
+---
+layout: default
+title: Visão Geral da Plataforma AIOS
+nav_order: 1
+has_children: true
+description: "Página inicial da documentação."
+---
+
+# Visão geral da plataforma AIOS
+
+Desenvolvido pela dtLabs, o AIOS é uma plataforma que combina hardware e software e permite a implantação rápida e fácil de soluções de inteligência artificial e visão computacional que podem ser aplicadas a diferentes segmentos do mercado, como indústria, logística, agronegócio, varejo, segurança do trabalho, proteção patrimonial, urbanismo e muito mais.
+
+Ela é composta por hardware especializado, chamado *AIBox*, combinado a software com uma interface no-code flexível, que agrega modelos de visão computacional prontos para usar, ferramentas para treinamento e gerenciamento de modelos customizados e recursos para o gerenciamento de dispositivos conectados à plataforma.
+
+Longe de ser apenas mais uma ferramenta, AIOS é um ecossistema que coloca o poder da Inteligência Artificial diretamente nas mãos dos usuários, independentemente de sua experiência em programação.
+
+**Veja também**  
+* [Organização e recursos da plataforma AIOS](./aios_organization_features.html)  
+* [Requisitos de hardware da plataforma AIOS](./aios_hardware_requirements.html)  
+* [Requisitos de software da plataforma AIOS](./aios_software_requirements.html)  

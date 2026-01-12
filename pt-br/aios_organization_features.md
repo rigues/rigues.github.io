@@ -2,7 +2,7 @@
 layout: default
 title: Organização e recursos da plataforma AIOS
 parent: Visão Geral da Plataforma AIOS
-nav_order: 2
+nav_order: 1
 description: "Organização básica da plataforma AIOS e lista de seus principais recursos."
 ---
 
