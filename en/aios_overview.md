@@ -1,7 +1,7 @@
 ---
 layout: default
 title: AIOS Platform Overview
-parent: Brazilian Portuguese
+parent: U.S. English
 nav_order: 1
 has_children: true
 description: Documentation home page.
