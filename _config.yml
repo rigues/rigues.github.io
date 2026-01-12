@@ -3,8 +3,14 @@ remote_theme: just-the-docs/just-the-docs
 
 # Configurações do Just the Docs
 aux_links:
-  "Repositório GitHub":
-    - https://github.com/rigues/rigues.github.io
+  "Site da dtLabs":
+    - https://www.dt-labs.ai
+
+# Enable the navbar
+nav_enabled: true
+
+# Enable Heading Anchors
+heading_anchors: true
 
 # Plugins necessários
 plugins:
